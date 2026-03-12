@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7f3ef;
+  --foreground: #1f1f1f;
+
+  /* Warm neutral design system */
+  --warm-50: #f4efe9;
+  --warm-100: #efe8e1;
+  --warm-200: #e7e0d8;
+  --warm-300: #d8d0c7;
+
+  --text-500: #6b6b6b;
+  --text-600: #4b4b4b;
+  --text-700: #3a3a3a;
+  --text-900: #1f1f1f;
+
+  /* Brand colors */
+  --brand-500: #2c585f;
+  --brand-600: #24474d;
+  --brand-700: #1c3a3f;
+
+  /* Warmer shadows */
+  --shadow-soft:
+    0 2px 4px rgba(120, 92, 67, 0.05),
+    0 10px 28px rgba(120, 92, 67, 0.07);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100%;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f7f3ef;
+  background-image:
+    linear-gradient(rgba(247, 243, 239, 0.85), rgba(247, 243, 239, 0.85)),
+    url('/pattern-geometric.jpg');
+  background-size: auto;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+/* Navbar background */
+.navbar-pattern {
+  position: relative;
+  background-color: #f7f3ef;
+  background-image: url('/navbar-pattern.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(120, 92, 67, 0.08);
+}
+
+/* Warm replacements for Tailwind gray utilities */
+.bg-gray-50 {
+  background-color: rgba(244, 239, 233, 0.6) !important;
+}
+
+.bg-gray-100 {
+  background-color: rgba(239, 232, 225, 0.9) !important;
+}
+
+.border-gray-200 {
+  border-color: var(--warm-200) !important;
+}
+
+.border-gray-300 {
+  border-color: var(--warm-300) !important;
+}
+
+.text-gray-500 {
+  color: var(--text-500) !important;
+}
+
+.text-gray-600 {
+  color: var(--text-600) !important;
+}
+
+.text-gray-700 {
+  color: var(--text-700) !important;
+}
+
+.text-gray-900 {
+  color: var(--text-900) !important;
+}
+
+/* Warm default border utility */
+.border {
+  border-color: var(--warm-200);
+}
+
+/* Softer warm shadows for cards */
+.shadow-sm {
+  box-shadow: var(--shadow-soft) !important;
+}
+
+/* Brand button colors */
+.bg-green-600,
+.bg-gray-900 {
+  background-color: var(--brand-500) !important;
+  color: white !important;
+}
+
+.hover\:bg-green-700:hover,
+.hover\:bg-black:hover {
+  background-color: var(--brand-600) !important;
+}
+
+/* Global button styling only for actual buttons and explicit button-like links */
+button,
+a.rounded-full[class*="bg-"] {
+  border-radius: 999px;
+  padding: 0.6rem 1.35rem;
+  font-weight: 500;
+  transition: all 0.18s ease;
+}
+
+/* Hover lift only for actual buttons and explicit pill buttons */
+button:hover,
+a.rounded-full[class*="bg-"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(44, 88, 95, 0.18);
+}
+
+button:active,
+a.rounded-full[class*="bg-"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(44, 88, 95, 0.15);
+}
