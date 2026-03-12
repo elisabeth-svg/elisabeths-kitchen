@@ -18,7 +18,7 @@ type FavoriteRecipe = {
     id: string
     title: string
     recipe_type: string
-  } | null
+  }[] | null
 }
 
 function formatCreatedDate(value: string) {
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
       <div className="mx-auto max-w-5xl p-6">
         <Link
           href="/"
-          className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
         >
           ← Back to home
         </Link>
@@ -100,7 +100,8 @@ export default async function ProfilePage() {
             Hi{firstName ? `, ${firstName}` : ''}
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">
-            Manage your personal account, custom menus, pantry, and favorite recipes.
+            Manage your personal account, custom menus, pantry, and favorite
+            recipes.
           </p>
         </section>
 
@@ -140,7 +141,8 @@ export default async function ProfilePage() {
                 {pantryCount}
               </p>
               <p className="mt-1 text-sm text-gray-600">
-                ingredient{pantryCount === 1 ? '' : 's'} currently in your pantry
+                ingredient{pantryCount === 1 ? '' : 's'} currently in your
+                pantry
               </p>
 
               <Link
@@ -255,25 +257,27 @@ export default async function ProfilePage() {
             </p>
           ) : (
             <div className="mt-5 space-y-3">
-              {(favoriteRows as FavoriteRecipe[]).map((favorite, index) => {
-                const recipe = favorite.recipes
-                if (!recipe) return null
+              {((favoriteRows ?? []) as FavoriteRecipe[]).map(
+                (favorite, index) => {
+                  const recipe = favorite.recipes?.[0]
+                  if (!recipe) return null
 
-                return (
-                  <Link
-                    key={`${recipe.id}-${index}`}
-                    href={`/recipes/${recipe.id}`}
-                    className="block rounded-xl border bg-gray-50 p-4 transition hover:bg-white"
-                  >
-                    <div className="font-medium text-blue-600 hover:underline">
-                      {recipe.title}
-                    </div>
-                    <div className="mt-1 text-sm text-gray-600">
-                      {recipe.recipe_type}
-                    </div>
-                  </Link>
-                )
-              })}
+                  return (
+                    <Link
+                      key={`${recipe.id}-${index}`}
+                      href={`/recipes/${recipe.id}`}
+                      className="block rounded-xl border bg-gray-50 p-4 transition hover:bg-white"
+                    >
+                      <div className="font-medium text-blue-600 hover:underline">
+                        {recipe.title}
+                      </div>
+                      <div className="mt-1 text-sm text-gray-600">
+                        {recipe.recipe_type}
+                      </div>
+                    </Link>
+                  )
+                }
+              )}
             </div>
           )}
         </section>
