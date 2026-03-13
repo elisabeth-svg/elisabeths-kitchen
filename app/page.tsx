@@ -12,16 +12,21 @@ export default async function HomePage() {
     .from('recipes')
     .select('*', { count: 'exact', head: true })
 
-  const quickFilters = [
-    { label: 'Slow cooker', query: { recipe_type: 'slow cooker' } },
-    { label: 'Oven', query: { recipe_type: 'oven' } },
-    { label: 'Pasta', query: { recipe_type: 'pasta' } },
-    { label: 'One pot', query: { recipe_type: 'one pot' } },
-    { label: 'Chicken', query: { protein_type: 'chicken' } },
-    { label: 'Fish', query: { protein_type: 'fish' } },
-    { label: 'Vegetarian', query: { diet_type: 'vegetarian' } },
-    { label: 'Under 45 min', query: { max_time: '45' } },
-  ]
+const quickFilters = [
+  { label: 'Slow cooker', query: { recipe_type: 'slow cooker' } },
+  { label: 'Oven', query: { recipe_type: 'oven' } },
+  { label: 'Pasta', query: { recipe_type: 'pasta' } },
+  { label: 'One pot', query: { recipe_type: 'one pot' } },
+
+  { label: 'Chicken', query: { protein_type: 'chicken' } },
+  { label: 'Fish', query: { protein_type: 'fish' } },
+  { label: 'Vegetarian', query: { diet_type: 'vegetarian' } },
+
+  { label: 'Under 45 min', query: { max_time: '45' } },
+
+  { label: 'Kid-friendly snacks', href: '/kids-snacks' },
+  { label: 'Pantry meals', href: '/pantry-suggestions' },
+]
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -123,17 +128,21 @@ export default async function HomePage() {
 
             <div className="mt-4 flex flex-wrap gap-2">
               {quickFilters.map((filter) => (
-                <Link
-                  key={filter.label}
-                  href={{
-                    pathname: '/recipes',
-                    query: filter.query,
-                  }}
-                  className="rounded-full border bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-white hover:shadow-sm"
-                >
-                  {filter.label}
-                </Link>
-              ))}
+  <Link
+    key={filter.label}
+    href={
+      filter.href
+        ? filter.href
+        : {
+            pathname: '/recipes',
+            query: filter.query,
+          }
+    }
+    className="rounded-full border bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-white hover:shadow-sm"
+  >
+    {filter.label}
+  </Link>
+))}
             </div>
           </section>
         </section>
