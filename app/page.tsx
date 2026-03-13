@@ -90,11 +90,11 @@ const quickFilters = [
                 <p className="mt-2 text-sm leading-6 text-gray-600">
                   See every dinner recipe in one place and open them individually.
                 </p>
-                <Link
-                  href="/recipes?meal_category=dinner"
-                  className="mt-3 inline-block text-sm font-medium text-blue-600 hover:underline"
+                                <Link
+                  href="/recipes?collection=dinner"
+                  className="mt-4 inline-flex items-center rounded-full bg-[#2c585f] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#24474d]"
                 >
-                  Open dinner recipes →
+                  Open dinner recipes
                 </Link>
               </div>
 
@@ -105,11 +105,11 @@ const quickFilters = [
                 <p className="mt-2 text-sm leading-6 text-gray-600">
                   Discover easy snack recipes that work well for children.
                 </p>
-                <Link
+                                <Link
                   href="/kids-snacks"
-                  className="mt-3 inline-block text-sm font-medium text-blue-600 hover:underline"
+                  className="mt-4 inline-flex items-center rounded-full bg-[#2c585f] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#24474d]"
                 >
-                  Open kid-friendly snacks →
+                  Open kid-friendly snacks
                 </Link>
               </div>
             </div>
