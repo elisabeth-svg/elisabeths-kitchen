@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { deleteCustomMenu } from './actions'
 
 type WeeklyMenu = {
   id: string
@@ -24,7 +23,45 @@ type Recipe = {
   recipe_type: string
 }
 
-function formatCreatedDate(value: string) {
+function getIsoWeekStart(year: number, week: number) {
+  const simple = new Date(Date.UTC(year, 0, 1 + (week - 1) * 7))
+  const day = simple.getUTCDay() || 7
+
+  if (day <= 4) {
+    simple.setUTCDate(simple.getUTCDate() - day + 1)
+  } else {
+    simple.setUTCDate(simple.getUTCDate() + 8 - day)
+  }
+
+  return simple
+}
+
+function formatWeekDateRange(weekNumber: number, year = 2026) {
+  const monday = getIsoWeekStart(year, weekNumber)
+  const friday = new Date(monday)
+  friday.setUTCDate(monday.getUTCDate() + 4)
+
+  const startDay = monday.getUTCDate()
+  const endDay = friday.getUTCDate()
+
+  const startMonth = monday.toLocaleDateString('en-GB', {
+    month: 'short',
+    timeZone: 'UTC',
+  })
+
+  const endMonth = friday.toLocaleDateString('en-GB', {
+    month: 'short',
+    timeZone: 'UTC',
+  })
+
+  if (startMonth === endMonth) {
+    return `${startDay} ${startMonth} – ${endDay} ${endMonth} ${year} menu plan`
+  }
+
+  return `${startDay} ${startMonth} – ${endDay} ${endMonth} ${year} menu plan`
+}
+
+function formatCustomMenuDate(value: string) {
   return new Intl.DateTimeFormat('en-GB', {
     day: 'numeric',
     month: 'short',
@@ -74,7 +111,10 @@ export default async function MenusPage() {
     ((recipes ?? []) as Recipe[]).map((recipe) => [recipe.id, recipe])
   )
 
-  const typedMenus = (menus ?? []) as WeeklyMenu[]
+  const typedMenus = ((menus ?? []) as WeeklyMenu[]).filter((menu) => {
+    if (!menu.is_custom) return true
+    return user ? menu.user_id === user.id : false
+  })
 
   const preMadeMenus = [...typedMenus]
     .filter((menu) => !menu.is_custom)
@@ -99,9 +139,7 @@ export default async function MenusPage() {
           <p className="mt-1 text-sm text-gray-600">
             {title === 'Pre-made Weekly Menus'
               ? 'Browse curated menus ready to use.'
-              : user
-              ? 'Menus you created from your own recipe selection.'
-              : 'Log in to see your custom menus.'}
+              : 'Menus you created from your own recipe selection.'}
           </p>
         </div>
 
@@ -117,49 +155,23 @@ export default async function MenusPage() {
 
               return (
                 <section key={menu.id} className="rounded-xl border bg-gray-50 p-4">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-lg font-semibold text-gray-900">
-                          {menu.name}
-                        </h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {menu.is_custom ? menu.name : `Week ${menu.week_number}`}
+                      </h3>
 
-                        <span className="rounded-full border bg-white px-3 py-1 text-xs font-medium text-gray-600">
-                          {menu.is_custom ? 'Custom' : `Week ${menu.week_number}`}
-                        </span>
-                      </div>
-
-                      {menu.description && (
-                        <p className="mt-2 text-sm text-gray-600">
-                          {menu.description}
-                        </p>
-                      )}
-
-                      {menu.is_custom && (
-                        <p className="mt-2 text-xs text-gray-500">
-                          Created on {formatCreatedDate(menu.created_at)}
-                        </p>
-                      )}
+                      <p className="mt-1 text-sm text-gray-600">
+                        {menu.is_custom
+                          ? menu.description || `Created on ${formatCustomMenuDate(menu.created_at)}`
+                          : formatWeekDateRange(menu.week_number)}
+                      </p>
                     </div>
 
                     {menu.is_custom && (
-                      <div className="flex flex-wrap gap-2">
-                        <Link
-                          href={`/menus/${menu.id}/edit`}
-                          className="rounded-lg border bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-                        >
-                          Edit menu
-                        </Link>
-
-                        <form action={deleteCustomMenu.bind(null, menu.id)}>
-                          <button
-                            type="submit"
-                            className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700"
-                          >
-                            Delete
-                          </button>
-                        </form>
-                      </div>
+                      <span className="rounded-full border bg-white px-3 py-1 text-xs font-medium text-gray-600">
+                        Custom
+                      </span>
                     )}
                   </div>
 
@@ -248,9 +260,7 @@ export default async function MenusPage() {
             {renderMenuSection(
               'Custom Menus',
               customMenus,
-              user
-                ? 'No custom menus created yet.'
-                : 'Log in to see and create your own custom menus.'
+              'No custom menus created yet.'
             )}
           </div>
         </div>
