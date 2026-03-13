@@ -63,6 +63,24 @@ body {
   box-shadow: 0 4px 16px rgba(120, 92, 67, 0.08);
 }
 
+/* Footer background matching navbar */
+.footer-pattern {
+  position: relative;
+  background-color: #f7f3ef;
+  background-image: url('/navbar-pattern.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center bottom;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* teal divider bars */
+.footer-bar {
+  height: 8px;
+  background-color: #2c585f;
+}
+
 /* Warm replacements for Tailwind gray utilities */
 .bg-gray-50 {
   background-color: rgba(244, 239, 233, 0.6) !important;
