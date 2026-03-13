@@ -118,24 +118,27 @@ body {
   background-color: var(--brand-600) !important;
 }
 
-/* Global button styling only for actual buttons and explicit button-like links */
-button,
-a.rounded-full[class*="bg-"] {
+/* Only style explicit pill/CTA links globally, not every button in the app */
+a.rounded-full[class*="bg-"],
+a.inline-flex.rounded-full[class*="bg-"],
+a.inline-block.rounded-full[class*="bg-"] {
   border-radius: 999px;
   padding: 0.6rem 1.35rem;
   font-weight: 500;
   transition: all 0.18s ease;
 }
 
-/* Hover lift only for actual buttons and explicit pill buttons */
-button:hover,
-a.rounded-full[class*="bg-"]:hover {
+/* Hover lift only for explicit pill/CTA links */
+a.rounded-full[class*="bg-"]:hover,
+a.inline-flex.rounded-full[class*="bg-"]:hover,
+a.inline-block.rounded-full[class*="bg-"]:hover {
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(44, 88, 95, 0.18);
 }
 
-button:active,
-a.rounded-full[class*="bg-"]:active {
+a.rounded-full[class*="bg-"]:active,
+a.inline-flex.rounded-full[class*="bg-"]:active,
+a.inline-block.rounded-full[class*="bg-"]:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(44, 88, 95, 0.15);
 }
