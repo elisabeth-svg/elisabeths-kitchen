@@ -139,3 +139,11 @@ a.rounded-full[class*="bg-"]:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(44, 88, 95, 0.15);
 }
+
+.text-blue-600 {
+  color: #c34e28 !important;
+}
+
+.hover\:text-blue-700:hover {
+  color: #a64020 !important;
+}
