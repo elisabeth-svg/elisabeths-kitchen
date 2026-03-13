@@ -67,12 +67,12 @@ body {
 .footer-pattern {
   position: relative;
   background-color: #f7f3ef;
-  background-image: url('/navbar-pattern.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center bottom;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  background-image:
+    radial-gradient(circle at center, rgba(247,243,239,0.95) 0%, rgba(247,243,239,0.85) 60%, rgba(247,243,239,0.75) 100%),
+    url('/footer-pattern.png');
+  background-repeat: repeat;
+  background-size: auto;
+  background-position: center;
 }
 
 /* teal divider bars */
