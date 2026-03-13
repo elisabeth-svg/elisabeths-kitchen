@@ -78,7 +78,7 @@ export default async function MenusPage() {
 
   const preMadeMenus = [...typedMenus]
     .filter((menu) => !menu.is_custom)
-    .sort((a, b) => a.week_number - b.week_number)
+    .sort((a, b) => b.week_number - a.week_number)
 
   const customMenus = [...typedMenus]
     .filter((menu) => menu.is_custom)
