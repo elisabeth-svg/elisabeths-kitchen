@@ -104,10 +104,7 @@ function formatGroupTitle(groupName: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
-function formatIngredient(
-  ingredient: RecipeIngredient,
-  multiplier: number
-) {
+function formatIngredient(ingredient: RecipeIngredient, multiplier: number) {
   const quantityValue =
     ingredient.quantity !== null && ingredient.quantity !== undefined
       ? Number(ingredient.quantity) * multiplier
@@ -196,61 +193,56 @@ export default function RecipeDetailContent({
   const baseServings = recipe.serves ?? 1
   const [servings, setServings] = useState(baseServings)
 
-  const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>(
-    () => {
-      if (typeof window === 'undefined') return {}
-      const stored = localStorage.getItem(getRecipeStorageKey(recipe.id))
-      if (!stored) return {}
+  const [checkedIngredients, setCheckedIngredients] = useState<Record<string, boolean>>({})
+  const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>({})
+  const [hasLoadedProgress, setHasLoadedProgress] = useState(false)
 
-      try {
-        const parsed = JSON.parse(stored)
-        return parsed.checkedIngredients ?? {}
-      } catch {
-        return {}
-      }
-    }
-  )
-
-  const [checkedSteps, setCheckedSteps] = useState<Record<string, boolean>>(() => {
-    if (typeof window === 'undefined') return {}
+  useEffect(() => {
     const stored = localStorage.getItem(getRecipeStorageKey(recipe.id))
-    if (!stored) return {}
+
+    if (!stored) {
+      setCheckedIngredients({})
+      setCheckedSteps({})
+      setHasLoadedProgress(true)
+      return
+    }
 
     try {
       const parsed = JSON.parse(stored)
-      return parsed.checkedSteps ?? {}
+      setCheckedIngredients(parsed.checkedIngredients ?? {})
+      setCheckedSteps(parsed.checkedSteps ?? {})
     } catch {
-      return {}
+      setCheckedIngredients({})
+      setCheckedSteps({})
     }
-  })
 
-  function saveProgress(
-    nextIngredients: Record<string, boolean>,
-    nextSteps: Record<string, boolean>
-  ) {
+    setHasLoadedProgress(true)
+  }, [recipe.id])
+
+  useEffect(() => {
+    if (!hasLoadedProgress) return
+
     localStorage.setItem(
       getRecipeStorageKey(recipe.id),
       JSON.stringify({
-        checkedIngredients: nextIngredients,
-        checkedSteps: nextSteps,
+        checkedIngredients,
+        checkedSteps,
       })
     )
-  }
+  }, [checkedIngredients, checkedSteps, hasLoadedProgress, recipe.id])
 
   function toggleIngredient(id: string) {
-    setCheckedIngredients((prev) => {
-      const next = { ...prev, [id]: !prev[id] }
-      saveProgress(next, checkedSteps)
-      return next
-    })
+    setCheckedIngredients((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }))
   }
 
   function toggleStep(id: string) {
-    setCheckedSteps((prev) => {
-      const next = { ...prev, [id]: !prev[id] }
-      saveProgress(checkedIngredients, next)
-      return next
-    })
+    setCheckedSteps((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }))
   }
 
   function clearProgress() {
@@ -449,7 +441,7 @@ export default function RecipeDetailContent({
             </div>
           </div>
 
-          <ol className="mt-5 space-y-5">
+          <ol className="mt-5 space-y-4">
             {instructions.map((step) => {
               const isChecked = !!checkedSteps[step.id]
 
@@ -458,10 +450,11 @@ export default function RecipeDetailContent({
                   <button
                     type="button"
                     onClick={() => toggleStep(step.id)}
-                    className={`flex w-full items-start gap-4 rounded-xl border p-5 text-left shadow-sm transition ${
+                    disabled={!hasLoadedProgress}
+                    className={`!rounded-xl !p-5 flex w-full items-start gap-4 border text-left transition ${
                       isChecked
                         ? 'border-green-200 bg-green-50'
-                        : 'border-gray-200 bg-white hover:bg-gray-50'
+                        : 'border-transparent bg-gray-50 hover:bg-white'
                     }`}
                   >
                     <div
@@ -474,7 +467,7 @@ export default function RecipeDetailContent({
                       {isChecked ? '✓' : step.step_number}
                     </div>
 
-                    <p className="text-base leading-7 text-gray-800">
+                    <p className="text-base leading-8 text-gray-800">
                       {step.instruction}
                     </p>
                   </button>
