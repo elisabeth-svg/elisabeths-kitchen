@@ -449,7 +449,7 @@ export default function RecipeDetailContent({
             </div>
           </div>
 
-          <ol className="mt-5 space-y-4">
+          <ol className="mt-5 space-y-5">
             {instructions.map((step) => {
               const isChecked = !!checkedSteps[step.id]
 
