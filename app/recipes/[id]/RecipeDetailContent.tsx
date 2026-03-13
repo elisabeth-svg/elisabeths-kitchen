@@ -458,14 +458,14 @@ export default function RecipeDetailContent({
                   <button
                     type="button"
                     onClick={() => toggleStep(step.id)}
-                    className={`flex w-full gap-4 rounded-2xl border p-5 text-left shadow-sm transition ${
+                    className={`flex w-full items-start gap-4 rounded-xl border p-5 text-left shadow-sm transition ${
                       isChecked
                         ? 'border-green-200 bg-green-50'
-                        : 'border-gray-200 bg-white hover:bg-white'
+                        : 'border-gray-200 bg-white hover:bg-gray-50'
                     }`}
                   >
                     <div
-                      className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-semibold ${
+                      className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-semibold ${
                         isChecked
                           ? 'bg-green-600 text-white'
                           : 'bg-green-100 text-green-800'
@@ -474,7 +474,7 @@ export default function RecipeDetailContent({
                       {isChecked ? '✓' : step.step_number}
                     </div>
 
-                    <p className="pt-0.5 text-base leading-8 text-gray-800">
+                    <p className="text-base leading-7 text-gray-800">
                       {step.instruction}
                     </p>
                   </button>
