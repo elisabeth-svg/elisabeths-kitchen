@@ -26,6 +26,10 @@ type IngredientMasterRow = {
   store_section: string | null
 }
 
+type PantryRow = {
+  ingredient_id: string
+}
+
 type GroceryItem = {
   key: string
   category: string
@@ -33,6 +37,7 @@ type GroceryItem = {
   totalQuantity: number | null
   unit: string | null
   countWithoutQuantity: number
+  inPantry: boolean
 }
 
 function mapCategoryToStoreSection(category?: string) {
@@ -58,8 +63,10 @@ function mapCategoryToStoreSection(category?: string) {
       return 'Bakery & Grains'
 
     case 'pantry':
-    case 'spices':
       return 'Pantry'
+
+    case 'spices':
+      return 'Spices'
 
     default:
       return 'Other'
@@ -75,7 +82,8 @@ function getSectionOrder(category: string) {
     Bakery: 5,
     'Bakery & Grains': 6,
     Pantry: 7,
-    Other: 8,
+    Spices: 8,
+    Other: 9,
   }
 
   return order[category] ?? 999
@@ -88,6 +96,10 @@ function formatMenuTitle(name: string) {
 export default async function GroceryListPage({ params }: PageProps) {
   const { menuId } = await params
   const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const { data: menu, error: menuError } = await supabase
     .from('weekly_menus')
@@ -106,13 +118,17 @@ export default async function GroceryListPage({ params }: PageProps) {
       <main className="flex flex-col gap-6">
         <section className="rounded-2xl border bg-white p-6 shadow-sm">
           <h1 className="text-2xl font-semibold">Grocery List</h1>
-          <p className="mt-4 text-red-600">There was a problem loading this menu.</p>
+          <p className="mt-4 text-red-600">
+            There was a problem loading this menu.
+          </p>
         </section>
       </main>
     )
   }
 
-  const recipeIds = ((menuRecipes ?? []) as MenuRecipeRow[]).map((row) => row.recipe_id)
+  const recipeIds = ((menuRecipes ?? []) as MenuRecipeRow[]).map(
+    (row) => row.recipe_id
+  )
 
   if (recipeIds.length === 0) {
     return (
@@ -120,7 +136,7 @@ export default async function GroceryListPage({ params }: PageProps) {
         <section className="rounded-2xl border bg-white p-6 shadow-sm">
           <Link
             href="/menus"
-            className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+            className="mb-4 inline-block text-sm text-blue-600 hover:underline"
           >
             ← Back to menus
           </Link>
@@ -134,7 +150,9 @@ export default async function GroceryListPage({ params }: PageProps) {
 
   const { data: ingredients, error: ingredientsError } = await supabase
     .from('recipe_ingredients')
-    .select('ingredient_id, canonical_ingredient, ingredient_name, quantity, unit')
+    .select(
+      'ingredient_id, canonical_ingredient, ingredient_name, quantity, unit'
+    )
     .in('recipe_id', recipeIds)
 
   if (ingredientsError) {
@@ -142,7 +160,9 @@ export default async function GroceryListPage({ params }: PageProps) {
       <main className="flex flex-col gap-6">
         <section className="rounded-2xl border bg-white p-6 shadow-sm">
           <h1 className="text-2xl font-semibold">Grocery List</h1>
-          <p className="mt-4 text-red-600">There was a problem loading ingredients.</p>
+          <p className="mt-4 text-red-600">
+            There was a problem loading ingredients.
+          </p>
         </section>
       </main>
     )
@@ -169,6 +189,19 @@ export default async function GroceryListPage({ params }: PageProps) {
     )
   }
 
+  let pantryIngredientIds = new Set<string>()
+
+  if (user) {
+    const { data: pantryRows } = await supabase
+      .from('user_pantry')
+      .select('ingredient_id')
+      .eq('user_id', user.id)
+
+    pantryIngredientIds = new Set(
+      ((pantryRows ?? []) as PantryRow[]).map((row) => row.ingredient_id)
+    )
+  }
+
   const grouped = new Map<string, GroceryItem>()
 
   for (const ingredient of (ingredients ?? []) as IngredientRow[]) {
@@ -183,11 +216,13 @@ export default async function GroceryListPage({ params }: PageProps) {
 
     const displayName = master?.display_name ?? ingredient.ingredient_name
     const category =
-      master?.store_section ||
-      mapCategoryToStoreSection(master?.category)
+      master?.store_section || mapCategoryToStoreSection(master?.category)
 
     const unit = ingredient.unit ?? null
     const key = `${canonical}__${unit ?? 'none'}`
+    const inPantry =
+      ingredient.ingredient_id !== null &&
+      pantryIngredientIds.has(ingredient.ingredient_id)
 
     if (!grouped.has(key)) {
       grouped.set(key, {
@@ -197,6 +232,7 @@ export default async function GroceryListPage({ params }: PageProps) {
         totalQuantity: null,
         unit,
         countWithoutQuantity: 0,
+        inPantry,
       })
     }
 
@@ -207,9 +243,17 @@ export default async function GroceryListPage({ params }: PageProps) {
     } else {
       current.countWithoutQuantity += 1
     }
+
+    if (inPantry) {
+      current.inPantry = true
+    }
   }
 
   const items = Array.from(grouped.values()).sort((a, b) => {
+    if (a.inPantry !== b.inPantry) {
+      return a.inPantry ? -1 : 1
+    }
+
     const categoryDiff = getSectionOrder(a.category) - getSectionOrder(b.category)
 
     if (categoryDiff !== 0) return categoryDiff
@@ -222,12 +266,12 @@ export default async function GroceryListPage({ params }: PageProps) {
       <section className="rounded-2xl border bg-white p-6 shadow-sm">
         <Link
           href="/menus"
-          className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
         >
           ← Back to menus
         </Link>
 
-        <h1 className="text-2xl font-semibold mb-2">{formatMenuTitle(menu.name)}</h1>
+        <h1 className="mb-2 text-2xl font-semibold">{formatMenuTitle(menu.name)}</h1>
         <p className="text-sm text-gray-600">
           Combined ingredients from all recipes in this weekly menu.
         </p>

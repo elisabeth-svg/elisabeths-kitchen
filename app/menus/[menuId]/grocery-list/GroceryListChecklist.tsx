@@ -9,6 +9,7 @@ type GroceryItem = {
   totalQuantity: number | null
   unit: string | null
   countWithoutQuantity: number
+  inPantry: boolean
 }
 
 type Props = {
@@ -147,7 +148,10 @@ export default function GroceryListChecklist({ items }: Props) {
     }))
   }
 
-  const checkedCount = Object.values(checked).filter(Boolean).length
+  const effectiveCheckedCount = items.filter(
+    (item) => item.inPantry || checked[item.key]
+  ).length
+
   const totalCount = items.length
 
   return (
@@ -157,7 +161,7 @@ export default function GroceryListChecklist({ items }: Props) {
           <div>
             <p className="text-sm text-gray-500">Shopping progress</p>
             <p className="font-medium">
-              {checkedCount} of {totalCount} checked
+              {effectiveCheckedCount} of {totalCount} checked
             </p>
           </div>
 
@@ -198,18 +202,21 @@ export default function GroceryListChecklist({ items }: Props) {
             {isOpen && (
               <div className="mt-3 space-y-3">
                 {categoryItems.map((item) => {
-                  const isChecked = !!checked[item.key]
+                  const isChecked = item.inPantry || !!checked[item.key]
 
                   return (
                     <button
                       key={item.key}
                       type="button"
-                      onClick={() => toggleItem(item.key)}
+                      onClick={() => {
+                        if (item.inPantry) return
+                        toggleItem(item.key)
+                      }}
                       className={`w-full rounded-xl border p-4 text-left transition ${
                         isChecked
                           ? 'border-green-200 bg-green-50 opacity-70'
                           : 'border-gray-200 bg-white active:bg-gray-50'
-                      }`}
+                      } ${item.inPantry ? 'cursor-default' : ''}`}
                     >
                       <div className="flex items-start gap-3">
                         <div
@@ -226,6 +233,12 @@ export default function GroceryListChecklist({ items }: Props) {
                           <div className="text-base font-medium">
                             {formatGroceryItem(item)}
                           </div>
+
+                          {item.inPantry && (
+                            <div className="mt-1 text-sm font-medium text-green-700">
+                              In pantry
+                            </div>
+                          )}
                         </div>
                       </div>
                     </button>
