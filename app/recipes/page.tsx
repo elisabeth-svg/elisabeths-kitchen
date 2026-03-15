@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import RecipeFilters from './RecipeFilters'
 
 type Recipe = {
   id: string
@@ -27,45 +28,6 @@ type RecipesPageProps = {
 function toArray(value?: string | string[]) {
   if (!value) return []
   return Array.isArray(value) ? value : [value]
-}
-
-function buildQueryString(
-  current: URLSearchParams,
-  key: string,
-  value: string
-) {
-  const params = new URLSearchParams(current.toString())
-  const existing = params.getAll(key)
-
-  params.delete(key)
-
-  if (existing.includes(value)) {
-    existing
-      .filter((item) => item !== value)
-      .forEach((item) => params.append(key, item))
-  } else {
-    ;[...existing, value].forEach((item) => params.append(key, item))
-  }
-
-  const query = params.toString()
-  return query ? `/recipes?${query}` : '/recipes'
-}
-
-function buildSingleValueQuery(
-  current: URLSearchParams,
-  key: string,
-  value: string
-) {
-  const params = new URLSearchParams(current.toString())
-
-  if (!value) {
-    params.delete(key)
-  } else {
-    params.set(key, value)
-  }
-
-  const query = params.toString()
-  return query ? `/recipes?${query}` : '/recipes'
 }
 
 function removeFilterValue(
@@ -152,7 +114,6 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
     )
     .order('title')
 
-  // Dinner collection = everything except snack recipes
   if (collection === 'dinner') {
     allRecipesQuery = allRecipesQuery.neq('recipe_type', 'snack')
     recipesQuery = recipesQuery.neq('recipe_type', 'snack')
@@ -187,11 +148,13 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
 
   if (error) {
     return (
-      <main className="flex flex-col gap-6">
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h1 className="text-2xl font-semibold">Recipes</h1>
-          <p className="mt-4 text-red-600">Error: {error.message}</p>
-        </section>
+      <main className="px-4 py-6 sm:px-6">
+        <div className="mx-auto mt-6 max-w-6xl">
+          <section className="rounded-2xl border bg-white p-6 shadow-sm">
+            <h1 className="text-2xl font-semibold">Recipes</h1>
+            <p className="mt-4 text-red-600">Error: {error.message}</p>
+          </section>
+        </div>
       </main>
     )
   }
@@ -257,294 +220,144 @@ export default async function RecipesPage({ searchParams }: RecipesPageProps) {
     collection ? `/recipes?collection=${collection}` : '/recipes'
 
   return (
-    <main className="flex flex-col gap-6 lg:grid lg:grid-cols-[300px_1fr] lg:items-start">
-      <aside className="rounded-2xl border bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold text-gray-900">Filters</h1>
-          <Link
-            href={clearAllHref}
-            className="text-sm text-blue-600 hover:underline"
-          >
-            Clear all
-          </Link>
-        </div>
+    <main className="px-4 py-6 sm:px-6">
+      <div className="mx-auto mt-6 max-w-6xl">
+        <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[300px_1fr] lg:items-start">
+          <RecipeFilters
+            clearAllHref={clearAllHref}
+            activeFilterCount={activeFilterCount}
+            recipeTypes={recipeTypes}
+            proteinTypes={proteinTypes}
+            dietTypes={dietTypes}
+            selectedRecipeTypes={selectedRecipeTypes}
+            selectedProteinTypes={selectedProteinTypes}
+            selectedDietTypes={selectedDietTypes}
+            selectedMaxTime={selectedMaxTime}
+            recipeTypeCounts={recipeTypeCounts}
+            proteinTypeCounts={proteinTypeCounts}
+            dietTypeCounts={dietTypeCounts}
+            currentQueryString={currentParams.toString()}
+            countByMaxTimeValues={{
+              '30': countByMaxTime(allRecipes, 30),
+              '45': countByMaxTime(allRecipes, 45),
+              '60': countByMaxTime(allRecipes, 60),
+            }}
+          />
 
-        <p className="mt-2 text-sm text-gray-600">
-          {activeFilterCount === 0
-            ? 'No filters selected'
-            : `${activeFilterCount} filter${activeFilterCount === 1 ? '' : 's'} selected`}
-        </p>
+          <section className="rounded-2xl border bg-white p-6 shadow-sm">
+            <div className="mb-4 flex flex-col gap-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-semibold text-gray-900">
+                    {pageTitle}
+                  </h1>
+                  <p className="mt-1 text-sm leading-6 text-gray-600">
+                    {pageDescription}
+                  </p>
+                </div>
 
-        <div className="mt-6 space-y-6">
-          <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Cooking style
-            </h2>
-            <div className="space-y-2">
-              {recipeTypes.map((value) => {
-                const checked = selectedRecipeTypes.includes(value)
-                return (
-                  <Link
-                    key={value}
-                    href={buildQueryString(currentParams, 'recipe_type', value)}
-                    className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 hover:bg-gray-50"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`flex h-4 w-4 items-center justify-center rounded border text-xs ${
-                          checked
-                            ? 'border-gray-900 bg-gray-900 text-white'
-                            : 'border-gray-300 bg-white text-transparent'
-                        }`}
-                      >
-                        ✓
-                      </span>
-                      <span className="text-sm text-gray-700 capitalize">
-                        {value}
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-400">
-                      {recipeTypeCounts[value] ?? 0}
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
+                <p className="shrink-0 text-sm text-gray-500">
+                  {(recipes as Recipe[] | null)?.length ?? 0} found
+                </p>
+              </div>
 
-          <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Protein
-            </h2>
-            <div className="space-y-2">
-              {proteinTypes.map((value) => {
-                const checked = selectedProteinTypes.includes(value)
-                return (
-                  <Link
-                    key={value}
-                    href={buildQueryString(currentParams, 'protein_type', value)}
-                    className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 hover:bg-gray-50"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`flex h-4 w-4 items-center justify-center rounded border text-xs ${
-                          checked
-                            ? 'border-gray-900 bg-gray-900 text-white'
-                            : 'border-gray-300 bg-white text-transparent'
-                        }`}
-                      >
-                        ✓
-                      </span>
-                      <span className="text-sm text-gray-700 capitalize">
-                        {value}
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-400">
-                      {proteinTypeCounts[value] ?? 0}
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
+              <form
+                action="/recipes"
+                method="get"
+                className="flex flex-col gap-3 sm:flex-row"
+              >
+                {collection && (
+                  <input type="hidden" name="collection" value={collection} />
+                )}
 
-          <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Diet
-            </h2>
-            <div className="space-y-2">
-              {dietTypes.map((value) => {
-                const checked = selectedDietTypes.includes(value)
-                return (
-                  <Link
-                    key={value}
-                    href={buildQueryString(currentParams, 'diet_type', value)}
-                    className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 hover:bg-gray-50"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`flex h-4 w-4 items-center justify-center rounded border text-xs ${
-                          checked
-                            ? 'border-gray-900 bg-gray-900 text-white'
-                            : 'border-gray-300 bg-white text-transparent'
-                        }`}
-                      >
-                        ✓
-                      </span>
-                      <span className="text-sm text-gray-700 capitalize">
-                        {value}
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-400">
-                      {dietTypeCounts[value] ?? 0}
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={queryText}
+                  placeholder="Search recipes..."
+                  className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm outline-none focus:border-gray-500"
+                />
 
-          <section>
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
-              Cooking time
-            </h2>
-            <div className="space-y-2">
-              {[
-                { label: 'Any', value: '' },
-                { label: 'Under 30 min', value: '30' },
-                { label: 'Under 45 min', value: '45' },
-                { label: 'Under 60 min', value: '60' },
-              ].map((option) => {
-                const checked = selectedMaxTime === option.value
-                return (
-                  <Link
-                    key={option.label}
-                    href={buildSingleValueQuery(
-                      currentParams,
-                      'max_time',
-                      option.value
-                    )}
-                    className="flex items-center justify-between gap-3 rounded-lg px-2 py-2 hover:bg-gray-50"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`flex h-4 w-4 items-center justify-center rounded border text-xs ${
-                          checked
-                            ? 'border-gray-900 bg-gray-900 text-white'
-                            : 'border-gray-300 bg-white text-transparent'
-                        }`}
-                      >
-                        ✓
-                      </span>
-                      <span className="text-sm text-gray-700">
-                        {option.label}
-                      </span>
-                    </div>
-                    {option.value && (
-                      <span className="text-xs text-gray-400">
-                        {countByMaxTime(allRecipes, Number(option.value))}
-                      </span>
-                    )}
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
-        </div>
-      </aside>
-
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
-        <div className="mb-4 flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                {pageTitle}
-              </h1>
-              <p className="mt-1 text-sm text-gray-600">
-                {pageDescription}
-              </p>
+                <button
+                  type="submit"
+                  className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-black"
+                >
+                  Search
+                </button>
+              </form>
             </div>
 
-            <p className="text-sm text-gray-500">
-              {(recipes as Recipe[] | null)?.length ?? 0} found
-            </p>
-          </div>
-
-          <form
-            action="/recipes"
-            method="get"
-            className="flex flex-col gap-3 sm:flex-row"
-          >
-            {collection && (
-              <input type="hidden" name="collection" value={collection} />
+            {activeFilters.length > 0 && (
+              <div className="mb-6">
+                <p className="mb-3 text-sm font-medium text-gray-600">
+                  Active filters
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {activeFilters.map((filter) => (
+                    <Link
+                      key={filter.label}
+                      href={filter.href}
+                      className="inline-flex items-center gap-2 rounded-full border bg-gray-50 px-3 py-1.5 text-sm text-gray-700 hover:bg-white"
+                    >
+                      <span className="capitalize">{filter.label}</span>
+                      <span className="text-gray-400">✕</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             )}
 
-            <input
-              type="text"
-              name="q"
-              defaultValue={queryText}
-              placeholder="Search recipes..."
-              className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm outline-none focus:border-gray-500"
-            />
-
-            <button
-              type="submit"
-              className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-black"
-            >
-              Search
-            </button>
-          </form>
-        </div>
-
-        {activeFilters.length > 0 && (
-          <div className="mb-6">
-            <p className="mb-3 text-sm font-medium text-gray-600">
-              Active filters
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {activeFilters.map((filter) => (
-                <Link
-                  key={filter.label}
-                  href={filter.href}
-                  className="inline-flex items-center gap-2 rounded-full border bg-gray-50 px-3 py-1.5 text-sm text-gray-700 hover:bg-white"
+            <ul className="space-y-4">
+              {((recipes ?? []) as Recipe[]).map((recipe) => (
+                <li
+                  key={recipe.id}
+                  className="rounded-2xl border bg-gray-50 p-5 transition hover:bg-white hover:shadow-sm"
                 >
-                  <span className="capitalize">{filter.label}</span>
-                  <span className="text-gray-400">✕</span>
-                </Link>
+                  <Link
+                    href={`/recipes/${recipe.id}`}
+                    className="text-lg font-semibold text-blue-600 hover:underline"
+                  >
+                    {recipe.title}
+                  </Link>
+
+                  <div className="mt-2 text-sm text-gray-600">
+                    <span className="capitalize">{recipe.recipe_type}</span>
+                    {' • '}
+                    Serves {recipe.serves ?? '—'}
+                    {recipe.total_time_minutes
+                      ? ` • ${formatTotalTime(recipe.total_time_minutes)}`
+                      : ''}
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
+                      {recipe.recipe_type}
+                    </span>
+
+                    {recipe.protein_type && (
+                      <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
+                        {recipe.protein_type}
+                      </span>
+                    )}
+
+                    {recipe.diet_type && (
+                      <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
+                        {recipe.diet_type}
+                      </span>
+                    )}
+
+                    {recipe.difficulty && (
+                      <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
+                        {recipe.difficulty}
+                      </span>
+                    )}
+                  </div>
+                </li>
               ))}
-            </div>
-          </div>
-        )}
-
-        <ul className="space-y-4">
-          {((recipes ?? []) as Recipe[]).map((recipe) => (
-            <li
-              key={recipe.id}
-              className="rounded-2xl border bg-gray-50 p-5 transition hover:bg-white hover:shadow-sm"
-            >
-              <Link
-                href={`/recipes/${recipe.id}`}
-                className="text-lg font-semibold text-blue-600 hover:underline"
-              >
-                {recipe.title}
-              </Link>
-
-              <div className="mt-2 text-sm text-gray-600">
-                <span className="capitalize">{recipe.recipe_type}</span>
-                {' • '}
-                Serves {recipe.serves ?? '—'}
-                {recipe.total_time_minutes
-                  ? ` • ${formatTotalTime(recipe.total_time_minutes)}`
-                  : ''}
-              </div>
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
-                  {recipe.recipe_type}
-                </span>
-
-                {recipe.protein_type && (
-                  <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
-                    {recipe.protein_type}
-                  </span>
-                )}
-
-                {recipe.diet_type && (
-                  <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
-                    {recipe.diet_type}
-                  </span>
-                )}
-
-                {recipe.difficulty && (
-                  <span className="rounded-full border bg-white px-3 py-1 text-xs text-gray-700">
-                    {recipe.difficulty}
-                  </span>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+            </ul>
+          </section>
+        </div>
+      </div>
     </main>
   )
 }

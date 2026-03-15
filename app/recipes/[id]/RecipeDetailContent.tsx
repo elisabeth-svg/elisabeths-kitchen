@@ -441,7 +441,7 @@ export default function RecipeDetailContent({
             </div>
           </div>
 
-          <ol className="mt-5 space-y-4">
+          <ol className="mt-5 space-y-3 sm:space-y-4">
             {instructions.map((step) => {
               const isChecked = !!checkedSteps[step.id]
 
@@ -451,14 +451,14 @@ export default function RecipeDetailContent({
                     type="button"
                     onClick={() => toggleStep(step.id)}
                     disabled={!hasLoadedProgress}
-                    className={`!rounded-xl !p-5 flex w-full items-start gap-4 border text-left transition ${
+                    className={`flex w-full items-start gap-3 rounded-xl border p-4 text-left transition sm:gap-4 sm:p-5 ${
                       isChecked
                         ? 'border-green-200 bg-green-50'
                         : 'border-transparent bg-gray-50 hover:bg-white'
                     }`}
                   >
                     <div
-                      className={`mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base font-semibold ${
+                      className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold sm:mt-1 sm:h-10 sm:w-10 sm:text-base ${
                         isChecked
                           ? 'bg-green-600 text-white'
                           : 'bg-green-100 text-green-800'
@@ -467,7 +467,7 @@ export default function RecipeDetailContent({
                       {isChecked ? '✓' : step.step_number}
                     </div>
 
-                    <p className="text-base leading-8 text-gray-800">
+                    <p className="text-sm leading-6 text-gray-800 sm:text-[15px] sm:leading-7">
                       {step.instruction}
                     </p>
                   </button>

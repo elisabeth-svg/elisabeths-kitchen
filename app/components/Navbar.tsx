@@ -115,12 +115,12 @@ export default function Navbar() {
       <div className="h-2 w-full bg-[#2c585f]" />
 
       <header className="navbar-pattern sticky top-0 z-50 border-b border-[#e7e0d8]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-col gap-3 lg:w-full lg:flex-row lg:items-center lg:justify-between">
-            <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-3 shadow-sm">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex w-full flex-col items-center gap-3 lg:w-full lg:flex-row lg:items-center lg:justify-between">
+            <div className="w-full max-w-5xl rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-3 shadow-sm lg:max-w-none lg:w-auto">
               <Link
                 href="/"
-                className="flex items-center gap-3 text-gray-900"
+                className="flex items-center justify-center gap-3 text-gray-900 lg:justify-start"
               >
                 <Image
                   src="/icon.png"
@@ -131,15 +131,15 @@ export default function Navbar() {
                   className="rounded-full"
                 />
 
-                <span className="font-logo text-[1.7rem] leading-none text-[#525C45] sm:text-[1.9rem]">
+                <span className="font-logo text-[1.45rem] leading-none text-[#525C45] sm:text-[1.7rem] lg:text-[1.9rem]">
                   Elisabeth&apos;s Kitchen
                 </span>
               </Link>
             </div>
 
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-              <nav className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-6 py-3 shadow-sm">
-                <div className="flex flex-wrap items-center gap-6">
+            <div className="flex w-full max-w-5xl flex-col items-center gap-3 lg:max-w-none lg:w-auto lg:flex-row lg:items-center">
+              <nav className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-3 shadow-sm lg:w-auto lg:px-6">
+                <div className="flex items-center justify-center gap-8 sm:gap-10 lg:flex-wrap lg:justify-start lg:gap-6">
                   <Link href="/" className={linkClass('/')}>
                     Home
                   </Link>
@@ -160,8 +160,8 @@ export default function Navbar() {
                 </div>
               </nav>
 
-              <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2 shadow-sm">
-                <div className="flex items-center gap-3">
+              <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm lg:w-auto lg:px-5 lg:py-2">
+                <div className="flex items-center justify-center gap-3 lg:justify-start">
                   {loading ? (
                     <span className="text-sm text-gray-500">Loading...</span>
                   ) : user ? (
