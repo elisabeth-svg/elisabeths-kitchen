@@ -180,6 +180,10 @@ export default function Navbar() {
                       Pantry
                     </Link>
                   )}
+
+                  <Link href="/notes" className={linkClass('/notes')}>
+                    Notes
+                  </Link>
                 </div>
               </nav>
 

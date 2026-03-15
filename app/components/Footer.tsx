@@ -3,58 +3,82 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="mt-16">
-      <div className="footer-bar" />
-
-      <div className="footer-pattern">
-        <div className="mx-auto grid max-w-5xl gap-6 px-6 py-10 md:grid-cols-3">
-          <div className="rounded-2xl border border-[#e7e0d8] bg-[#f4efe9] p-6 shadow-sm">
+    <footer className="footer-pattern mt-12 border-t border-[#e7e0d8]">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="grid gap-6 md:grid-cols-3">
+          
+          {/* Card 1 */}
+          <div className="rounded-2xl border bg-white p-6 shadow-sm">
             <div className="flex items-center gap-3">
               <Image
                 src="/icon.png"
                 alt="Elisabeth's Kitchen"
-                width={38}
-                height={38}
+                width={36}
+                height={36}
                 className="rounded-full"
               />
-              <h3 className="font-logo text-[1.45rem] leading-none text-[#525C45] sm:text-[1.6rem]">
-                Elisabeth’s Kitchen
-              </h3>
+
+              <span className="font-logo text-xl text-[#525C45]">
+                Elisabeth's Kitchen
+              </span>
             </div>
 
-            <p className="mt-3 text-sm leading-6 text-gray-600">
+            <p className="mt-3 text-gray-600">
               Plan your week, cook with less stress.
             </p>
+
+            <p className="mt-2 text-gray-600">
+              Recipes designed for real weeknight cooking.
+            </p>
+
+            <div className="mt-4">
+              <Link
+                href="/notes"
+                className="text-sm font-medium text-[#c34e28] hover:underline"
+              >
+                Notes →
+              </Link>
+            </div>
           </div>
 
-          <div className="rounded-2xl border border-[#e7e0d8] bg-[#f4efe9] p-6 shadow-sm">
-            <h4 className="font-accent text-lg text-[#525C45]">
+          {/* Card 2 */}
+          <div className="rounded-2xl border bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-[#525C45]">
               Recipes
-            </h4>
+            </h3>
 
-            <ul className="mt-3 space-y-2 text-sm">
+            <ul className="mt-3 space-y-2">
               <li>
-                <Link href="/menus" className="text-blue-600 hover:underline">
+                <Link
+                  href="/menus"
+                  className="text-[#c34e28] hover:underline"
+                >
                   Weekly menus
                 </Link>
               </li>
+
               <li>
                 <Link
                   href="/recipes?collection=dinner"
-                  className="text-blue-600 hover:underline"
+                  className="text-[#c34e28] hover:underline"
                 >
                   Dinner recipes
                 </Link>
               </li>
+
               <li>
-                <Link href="/kids-snacks" className="text-blue-600 hover:underline">
+                <Link
+                  href="/recipes?collection=snacks"
+                  className="text-[#c34e28] hover:underline"
+                >
                   Kid-friendly snacks
                 </Link>
               </li>
+
               <li>
                 <Link
-                  href="/pantry-suggestions"
-                  className="text-blue-600 hover:underline"
+                  href="/recipes?collection=pantry"
+                  className="text-[#c34e28] hover:underline"
                 >
                   Pantry meals
                 </Link>
@@ -62,51 +86,47 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-[#e7e0d8] bg-[#f4efe9] p-6 shadow-sm">
-            <h4 className="font-accent text-lg text-[#525C45]">
+          {/* Card 3 */}
+          <div className="rounded-2xl border bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-[#525C45]">
               Get in touch
-            </h4>
+            </h3>
 
-            <ul className="mt-3 space-y-2 text-sm">
+            <ul className="mt-3 space-y-2">
               <li>
                 <Link
                   href="/suggest-recipe"
-                  className="text-blue-600 hover:underline"
+                  className="text-[#c34e28] hover:underline"
                 >
                   Suggest a recipe
                 </Link>
               </li>
+
               <li>
-                <Link href="/contact" className="text-blue-600 hover:underline">
+                <Link
+                  href="/contact"
+                  className="text-[#c34e28] hover:underline"
+                >
                   Contact
                 </Link>
               </li>
             </ul>
-
-            <div className="mt-6 text-sm text-gray-600">
-              <p className="font-medium">Notes</p>
-              <p className="mt-1 leading-6">
-                Recipes designed for real weeknight cooking.
-              </p>
-            </div>
           </div>
+
         </div>
 
-        <div className="flex justify-center px-6 pb-8">
-          <div className="flex items-center gap-2 rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2 text-xs text-gray-600 shadow-sm">
-            <Image
-              src="/icon.png"
-              alt="Elisabeth's Kitchen"
-              width={18}
-              height={18}
-              className="rounded-full"
-            />
-            <span>© 2026 Elisabeth’s Kitchen</span>
-          </div>
+        {/* Footer bottom */}
+        <div className="mt-8 flex items-center justify-center gap-2 rounded-full border bg-[#f4efe9] px-4 py-2 text-sm text-gray-600 shadow-sm">
+          <Image
+            src="/icon.png"
+            alt="Elisabeth's Kitchen"
+            width={20}
+            height={20}
+            className="rounded-full"
+          />
+          <span>© 2026 Elisabeth's Kitchen</span>
         </div>
       </div>
-
-      <div className="footer-bar" />
     </footer>
   )
 }
