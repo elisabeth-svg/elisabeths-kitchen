@@ -29,6 +29,14 @@
 
 @font-face {
   font-family: "Rubik";
+  src: url("/fonts/Rubik-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
   src: url("/fonts/Rubik-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
@@ -118,6 +126,7 @@ body {
   min-height: 100%;
   color: var(--foreground);
   font-family: var(--font-body);
+  font-weight: 300;
   background-color: #f7f3ef;
   background-image:
     linear-gradient(rgba(247, 243, 239, 0.85), rgba(247, 243, 239, 0.85)),
