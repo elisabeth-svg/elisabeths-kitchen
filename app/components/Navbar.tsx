@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
@@ -111,26 +112,29 @@ export default function Navbar() {
 
   return (
     <>
-      {/* TOP COLOR BAR */}
       <div className="h-2 w-full bg-[#2c585f]" />
 
       <header className="navbar-pattern sticky top-0 z-50 border-b border-[#e7e0d8]">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:w-full">
-            
-            {/* BRAND */}
-            <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-6 py-3 shadow-sm">
+          <div className="flex flex-col gap-3 lg:w-full lg:flex-row lg:items-center lg:justify-between">
+            <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-3 shadow-sm">
               <Link
                 href="/"
-                className="text-lg font-semibold tracking-tight text-gray-900"
+                className="flex items-center gap-3 text-lg font-semibold tracking-tight text-gray-900"
               >
-                🍽️ Elisabeth&apos;s Kitchen
+                <Image
+                  src="/icon.png"
+                  alt="Elisabeth's Kitchen"
+                  width={34}
+                  height={34}
+                  priority
+                  className="rounded-full"
+                />
+                <span>Elisabeth&apos;s Kitchen</span>
               </Link>
             </div>
 
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-              
-              {/* NAV LINKS */}
               <nav className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-6 py-3 shadow-sm">
                 <div className="flex flex-wrap items-center gap-6">
                   <Link href="/" className={linkClass('/')}>
@@ -153,7 +157,6 @@ export default function Navbar() {
                 </div>
               </nav>
 
-              {/* USER AREA */}
               <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2 shadow-sm">
                 <div className="flex items-center gap-3">
                   {loading ? (
@@ -204,7 +207,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* BOTTOM COLOR BAR */}
       <div className="h-2 w-full bg-[#2c585f]" />
     </>
   )
