@@ -17,7 +17,7 @@ export default function Footer() {
                 height={38}
                 className="rounded-full"
               />
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="font-logo text-[1.45rem] leading-none text-[#525C45] sm:text-[1.6rem]">
                 Elisabeth’s Kitchen
               </h3>
             </div>
@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
 
           <div className="rounded-2xl border border-[#e7e0d8] bg-[#f4efe9] p-6 shadow-sm">
-            <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+            <h4 className="font-accent text-lg text-[#525C45]">
               Recipes
             </h4>
 
@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
 
           <div className="rounded-2xl border border-[#e7e0d8] bg-[#f4efe9] p-6 shadow-sm">
-            <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+            <h4 className="font-accent text-lg text-[#525C45]">
               Get in touch
             </h4>
 

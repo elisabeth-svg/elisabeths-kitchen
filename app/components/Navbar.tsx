@@ -120,7 +120,7 @@ export default function Navbar() {
             <div className="rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-3 shadow-sm">
               <Link
                 href="/"
-                className="flex items-center gap-3 text-lg font-semibold tracking-tight text-gray-900"
+                className="flex items-center gap-3 text-gray-900"
               >
                 <Image
                   src="/icon.png"
@@ -130,7 +130,10 @@ export default function Navbar() {
                   priority
                   className="rounded-full"
                 />
-                <span>Elisabeth&apos;s Kitchen</span>
+
+                <span className="font-logo text-[1.7rem] leading-none text-[#525C45] sm:text-[1.9rem]">
+                  Elisabeth&apos;s Kitchen
+                </span>
               </Link>
             </div>
 

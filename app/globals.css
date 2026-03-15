@@ -1,8 +1,80 @@
 @import "tailwindcss";
 
+/* Brand fonts */
+@font-face {
+  font-family: "Mountainous";
+  src:
+    url("/fonts/Mountainous.woff2") format("woff2"),
+    url("/fonts/Mountainous.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Romana";
+  src: url("/fonts/Romana-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Romana";
+  src: url("/fonts/Romana-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("/fonts/Rubik-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("/fonts/Rubik-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("/fonts/Rubik-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("/fonts/Rubik-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #f7f3ef;
   --foreground: #1f1f1f;
+
+  /* Full brand palette */
+  --bone: #ffe8d9;
+  --dusty-rose: #f7d4c2;
+  --sunshine: #e59e59;
+  --mustard: #c9873d;
+  --terracotta: #b85433;
+  --coral: #eb876e;
+  --blush: #f2bab5;
+  --periwinkle: #a8b5cc;
+  --lime: #b89e42;
+  --forest: #525c45;
+  --aqua: #36575e;
 
   /* Warm neutral design system */
   --warm-50: #f4efe9;
@@ -20,6 +92,11 @@
   --brand-600: #24474d;
   --brand-700: #1c3a3f;
 
+  /* Font system */
+  --font-body: "Rubik", Arial, Helvetica, sans-serif;
+  --font-logo: "Mountainous", Georgia, serif;
+  --font-accent: "Romana", Georgia, serif;
+
   /* Warmer shadows */
   --shadow-soft:
     0 2px 4px rgba(120, 92, 67, 0.05),
@@ -29,7 +106,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -40,7 +117,7 @@ html {
 body {
   min-height: 100%;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   background-color: #f7f3ef;
   background-image:
     linear-gradient(rgba(247, 243, 239, 0.85), rgba(247, 243, 239, 0.85)),
@@ -48,6 +125,52 @@ body {
   background-size: auto;
   background-repeat: repeat;
   background-attachment: fixed;
+}
+
+/* Optional utility font classes */
+.font-logo {
+  font-family: var(--font-logo);
+}
+
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* Optional utility color classes */
+.text-forest {
+  color: var(--forest);
+}
+
+.text-aqua {
+  color: var(--aqua);
+}
+
+.text-terracotta {
+  color: var(--terracotta);
+}
+
+.text-mustard {
+  color: var(--mustard);
+}
+
+.bg-bone {
+  background-color: var(--bone);
+}
+
+.bg-dusty-rose {
+  background-color: var(--dusty-rose);
+}
+
+.bg-aqua {
+  background-color: var(--aqua);
+}
+
+.bg-forest {
+  background-color: var(--forest);
 }
 
 /* Navbar background */
@@ -75,7 +198,7 @@ body {
   background-position: center;
 }
 
-/* teal divider bars */
+/* Teal divider bars */
 .footer-bar {
   height: 8px;
   background-color: #2c585f;
@@ -161,6 +284,7 @@ a.inline-block.rounded-full[class*="bg-"]:active {
   box-shadow: 0 2px 8px rgba(44, 88, 95, 0.15);
 }
 
+/* Warm link color replacement */
 .text-blue-600 {
   color: #c34e28 !important;
 }
