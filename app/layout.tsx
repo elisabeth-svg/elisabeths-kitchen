@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Weekly menus, recipes, and grocery lists',
   icons: {
     icon: '/icon.png',
-    apple: '/apple-icon.png',
+    apple: '/apple-touch-icon.png',
   },
 }
 
