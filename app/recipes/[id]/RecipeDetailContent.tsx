@@ -129,12 +129,10 @@ function formatIngredient(ingredient: RecipeIngredient, multiplier: number) {
 
   function formatUnit(unit: string) {
     if (!unit) return ''
-
     if (unit === 'piece') return ''
     if (unit === 'clove') return isPlural ? 'cloves' : 'clove'
     if (unit === 'stalk') return isPlural ? 'stalks' : 'stalk'
     if (unit === 'bunch') return isPlural ? 'bunches' : 'bunch'
-
     return unit
   }
 
@@ -279,13 +277,13 @@ export default function RecipeDetailContent({
   ) as string[]
 
   return (
-    <div className="space-y-6">
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
+    <div className="space-y-4 sm:space-y-5">
+      <section className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
         <p className="text-sm font-medium uppercase tracking-wide text-green-700">
           Recipe
         </p>
 
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">
+        <h1 className="mt-2 text-2xl font-semibold text-gray-900 sm:text-3xl">
           {recipe.title}
         </h1>
 
@@ -309,16 +307,16 @@ export default function RecipeDetailContent({
           />
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-xl bg-gray-50 p-4">
+        <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-6 sm:gap-3 sm:grid-cols-4">
+          <div className="rounded-xl bg-gray-50 p-3 sm:p-4">
             <div className="text-xs uppercase tracking-wide text-gray-500">Type</div>
             <div className="mt-1 font-medium text-gray-900">{recipe.recipe_type}</div>
           </div>
 
-          <div className="rounded-xl bg-gray-50 p-4">
+          <div className="rounded-xl bg-gray-50 p-3 sm:p-4">
             <div className="text-xs uppercase tracking-wide text-gray-500">Serves</div>
 
-            <div className="mt-2 flex items-center gap-3">
+            <div className="mt-2 flex items-center gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={() => setServings((current) => Math.max(1, current - 1))}
@@ -341,14 +339,14 @@ export default function RecipeDetailContent({
             </div>
           </div>
 
-          <div className="rounded-xl bg-gray-50 p-4">
+          <div className="rounded-xl bg-gray-50 p-3 sm:p-4">
             <div className="text-xs uppercase tracking-wide text-gray-500">Prep</div>
             <div className="mt-1 font-medium text-gray-900">
               {recipe.prep_minutes ?? '—'} min
             </div>
           </div>
 
-          <div className="rounded-xl bg-gray-50 p-4">
+          <div className="rounded-xl bg-gray-50 p-3 sm:p-4">
             <div className="text-xs uppercase tracking-wide text-gray-500">Cook</div>
             <div className="mt-1 font-medium text-gray-900">
               {recipe.cook_minutes ?? '—'} min
@@ -374,14 +372,14 @@ export default function RecipeDetailContent({
         </div>
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-semibold text-gray-900">Ingredients</h2>
+      <div className="grid gap-4 sm:gap-5 lg:grid-cols-[1fr_1.15fr]">
+        <section className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
+          <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">Ingredients</h2>
 
-          <div className="mt-5 space-y-6">
+          <div className="mt-4 space-y-5 sm:mt-5 sm:space-y-6">
             {Object.entries(ingredientsByGroup).map(([groupName, groupIngredients]) => (
               <div key={groupName}>
-                <div className="mb-3 border-b pb-2">
+                <div className="mb-2.5 border-b pb-2 sm:mb-3">
                   <h3 className="text-base font-semibold text-gray-900">
                     {formatGroupTitle(groupName)}
                   </h3>
@@ -396,14 +394,14 @@ export default function RecipeDetailContent({
                         key={ingredient.id}
                         type="button"
                         onClick={() => toggleIngredient(ingredient.id)}
-                        className={`flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left transition ${
+                        className={`flex w-full items-start gap-3 rounded-xl border px-3.5 py-2.5 text-left transition sm:px-4 sm:py-3 ${
                           isChecked
                             ? 'border-green-200 bg-green-50'
                             : 'border-gray-200 bg-gray-50 hover:bg-white'
                         }`}
                       >
                         <div
-                          className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-sm font-bold ${
+                          className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-xs font-bold sm:h-6 sm:w-6 sm:text-sm ${
                             isChecked
                               ? 'border-green-600 bg-green-600 text-white'
                               : 'border-gray-300 bg-white text-transparent'
@@ -412,7 +410,7 @@ export default function RecipeDetailContent({
                           ✓
                         </div>
 
-                        <div className="text-sm leading-6 text-gray-800">
+                        <div className="text-sm leading-5 sm:leading-6 text-gray-800">
                           {formatIngredient(ingredient, servings / baseServings)}
                         </div>
                       </button>
@@ -424,8 +422,8 @@ export default function RecipeDetailContent({
           </div>
         </section>
 
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-semibold text-gray-900">Instructions</h2>
+        <section className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
+          <h2 className="text-xl font-semibold text-gray-900 sm:text-2xl">Instructions</h2>
 
           <div className="mt-4">
             <div className="flex items-center justify-between text-sm text-gray-600">
@@ -441,7 +439,7 @@ export default function RecipeDetailContent({
             </div>
           </div>
 
-          <ol className="mt-5 space-y-3 sm:space-y-4">
+          <ol className="mt-4 space-y-2.5 sm:mt-5 sm:space-y-3">
             {instructions.map((step) => {
               const isChecked = !!checkedSteps[step.id]
 
@@ -451,14 +449,14 @@ export default function RecipeDetailContent({
                     type="button"
                     onClick={() => toggleStep(step.id)}
                     disabled={!hasLoadedProgress}
-                    className={`flex w-full items-start gap-3 rounded-xl border p-4 text-left transition sm:gap-4 sm:p-5 ${
+                    className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left transition sm:gap-3.5 sm:p-4 ${
                       isChecked
                         ? 'border-green-200 bg-green-50'
                         : 'border-transparent bg-gray-50 hover:bg-white'
                     }`}
                   >
                     <div
-                      className={`mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold sm:mt-1 sm:h-10 sm:w-10 sm:text-base ${
+                      className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold sm:h-8 sm:w-8 sm:text-sm ${
                         isChecked
                           ? 'bg-green-600 text-white'
                           : 'bg-green-100 text-green-800'
@@ -467,7 +465,7 @@ export default function RecipeDetailContent({
                       {isChecked ? '✓' : step.step_number}
                     </div>
 
-                    <p className="text-sm leading-6 text-gray-800 sm:text-[15px] sm:leading-7">
+                    <p className="text-[14px] leading-5 text-gray-800 sm:text-sm sm:leading-6">
                       {step.instruction}
                     </p>
                   </button>
