@@ -20,7 +20,6 @@ export default function Navbar() {
 
   const [user, setUser] = useState<AuthUser | null>(null)
   const [loading, setLoading] = useState(true)
-  const [loggingOut, setLoggingOut] = useState(false)
 
   function linkClass(path: string) {
     const isActive =
@@ -120,19 +119,6 @@ export default function Navbar() {
     }
   }, [supabase, router])
 
-  async function handleLogout() {
-    setLoggingOut(true)
-
-    await supabase.auth.signOut()
-    posthog.reset()
-
-    setUser(null)
-    setLoggingOut(false)
-
-    router.push('/')
-    router.refresh()
-  }
-
   return (
     <>
       <div className="h-2 w-full bg-[#2c585f]" />
@@ -174,47 +160,45 @@ export default function Navbar() {
                   <Link href="/recipes" className={linkClass('/recipes')}>
                     Recipes
                   </Link>
-
-                  {user && (
-                    <Link href="/pantry" className={linkClass('/pantry')}>
-                      Pantry
-                    </Link>
-                  )}
-
-                  <Link href="/notes" className={linkClass('/notes')}>
-                    Notes
-                  </Link>
                 </div>
               </nav>
 
               <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm lg:w-auto lg:px-5 lg:py-2">
-                <div className="flex items-center justify-center gap-3 lg:justify-start">
+                <div className="flex items-center justify-center gap-4 lg:justify-start">
                   {loading ? (
                     <span className="text-sm text-gray-500">Loading...</span>
                   ) : user ? (
                     <>
                       <Link
                         href="/profile"
-                        className="text-sm text-gray-700 hover:text-black hover:underline underline-offset-4"
+                        className={linkClass('/profile')}
                       >
                         Hi{user.firstName ? `, ${user.firstName}` : ''}
                       </Link>
 
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        disabled={loggingOut}
-                        className={`rounded-full px-4 py-2 text-sm font-medium text-white ${
-                          loggingOut
-                            ? 'cursor-not-allowed bg-gray-400'
-                            : 'bg-[#2c585f] hover:bg-[#24474d]'
-                        }`}
+                      <Link
+                        href="/pantry"
+                        className={linkClass('/pantry')}
                       >
-                        {loggingOut ? 'Logging out...' : 'Log out'}
-                      </button>
+                        Pantry
+                      </Link>
+
+                      <Link
+                        href="/notes"
+                        className={linkClass('/notes')}
+                      >
+                        Notes
+                      </Link>
                     </>
                   ) : (
                     <>
+                      <Link
+                        href="/notes"
+                        className={linkClass('/notes')}
+                      >
+                        Notes
+                      </Link>
+
                       <Link
                         href="/login"
                         className="text-sm font-medium text-gray-700 hover:text-black hover:underline underline-offset-4"
