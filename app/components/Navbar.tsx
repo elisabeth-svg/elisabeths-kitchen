@@ -4,9 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
+import posthog from 'posthog-js'
 import { createClient } from '@/lib/supabase/client'
 
 type AuthUser = {
+  id?: string
   email?: string
   firstName?: string
 }
@@ -50,10 +52,20 @@ export default function Navbar() {
         user?.email?.split('@')[0] ??
         null
 
+      if (user) {
+        posthog.identify(user.id, {
+          email: user.email,
+          first_name: firstName ?? undefined,
+        })
+      } else {
+        posthog.reset()
+      }
+
       if (isMounted) {
         setUser(
           user
             ? {
+                id: user.id,
                 email: user.email,
                 firstName: firstName ?? undefined,
               }
@@ -79,9 +91,19 @@ export default function Navbar() {
         session?.user?.email?.split('@')[0] ??
         null
 
+      if (session?.user) {
+        posthog.identify(session.user.id, {
+          email: session.user.email,
+          first_name: firstName ?? undefined,
+        })
+      } else {
+        posthog.reset()
+      }
+
       setUser(
         session?.user
           ? {
+              id: session.user.id,
               email: session.user.email,
               firstName: firstName ?? undefined,
             }
@@ -102,6 +124,7 @@ export default function Navbar() {
     setLoggingOut(true)
 
     await supabase.auth.signOut()
+    posthog.reset()
 
     setUser(null)
     setLoggingOut(false)
