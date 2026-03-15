@@ -5,11 +5,21 @@ import Footer from './components/Footer'
 
 export const metadata: Metadata = {
   title: "Elisabeth's Kitchen",
-  description: 'Weekly menus, recipes, and grocery lists',
+  description: "Weekly menus, recipes, and grocery lists",
+
   manifest: "/site.webmanifest",
+
   icons: {
-    icon: '/icon.png',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+
+  themeColor: "#2c585f",
+
+  appleWebApp: {
+    capable: true,
+    title: "Elisabeth's Kitchen",
+    statusBarStyle: "default",
   },
 }
 
