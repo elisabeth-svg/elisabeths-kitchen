@@ -115,13 +115,15 @@ export default async function GroceryListPage({ params }: PageProps) {
 
   if (menuError || menuRecipesError || !menu) {
     return (
-      <main className="flex flex-col gap-6">
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h1 className="text-2xl font-semibold">Grocery List</h1>
-          <p className="mt-4 text-red-600">
-            There was a problem loading this menu.
-          </p>
-        </section>
+      <main className="px-4 py-6 sm:px-6">
+        <div className="mx-auto mt-6 max-w-6xl">
+          <section className="rounded-2xl border bg-white p-6 shadow-sm">
+            <h1 className="text-2xl font-semibold">Grocery List</h1>
+            <p className="mt-4 text-red-600">
+              There was a problem loading this menu.
+            </p>
+          </section>
+        </div>
       </main>
     )
   }
@@ -132,18 +134,20 @@ export default async function GroceryListPage({ params }: PageProps) {
 
   if (recipeIds.length === 0) {
     return (
-      <main className="flex flex-col gap-6">
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <Link
-            href="/menus"
-            className="mb-4 inline-block text-sm text-blue-600 hover:underline"
-          >
-            ← Back to menus
-          </Link>
+      <main className="px-4 py-6 sm:px-6">
+        <div className="mx-auto mt-6 max-w-6xl">
+          <section className="rounded-2xl border bg-white p-6 shadow-sm">
+            <Link
+              href="/menus"
+              className="mb-4 inline-block text-sm text-blue-600 hover:underline"
+            >
+              ← Back to menus
+            </Link>
 
-          <h1 className="text-2xl font-semibold">{formatMenuTitle(menu.name)}</h1>
-          <p className="mt-4 text-gray-600">No recipes found for this menu.</p>
-        </section>
+            <h1 className="text-2xl font-semibold">{formatMenuTitle(menu.name)}</h1>
+            <p className="mt-4 text-gray-600">No recipes found for this menu.</p>
+          </section>
+        </div>
       </main>
     )
   }
@@ -157,13 +161,15 @@ export default async function GroceryListPage({ params }: PageProps) {
 
   if (ingredientsError) {
     return (
-      <main className="flex flex-col gap-6">
-        <section className="rounded-2xl border bg-white p-6 shadow-sm">
-          <h1 className="text-2xl font-semibold">Grocery List</h1>
-          <p className="mt-4 text-red-600">
-            There was a problem loading ingredients.
-          </p>
-        </section>
+      <main className="px-4 py-6 sm:px-6">
+        <div className="mx-auto mt-6 max-w-6xl">
+          <section className="rounded-2xl border bg-white p-6 shadow-sm">
+            <h1 className="text-2xl font-semibold">Grocery List</h1>
+            <p className="mt-4 text-red-600">
+              There was a problem loading ingredients.
+            </p>
+          </section>
+        </div>
       </main>
     )
   }
@@ -262,24 +268,26 @@ export default async function GroceryListPage({ params }: PageProps) {
   })
 
   return (
-    <main className="flex flex-col gap-6">
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
-        <Link
-          href="/menus"
-          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
-        >
-          ← Back to menus
-        </Link>
+    <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6">
+      <div className="mx-auto mt-6 max-w-6xl space-y-6">
+        <section className="rounded-2xl border bg-white p-5 shadow-sm sm:p-6">
+          <Link
+            href="/menus"
+            className="mb-4 inline-block text-sm text-blue-600 hover:underline"
+          >
+            ← Back to menus
+          </Link>
 
-        <h1 className="mb-2 text-2xl font-semibold">{formatMenuTitle(menu.name)}</h1>
-        <p className="text-sm text-gray-600">
-          Combined ingredients from all recipes in this weekly menu.
-        </p>
-      </section>
+          <h1 className="mb-2 text-2xl font-semibold">{formatMenuTitle(menu.name)}</h1>
+          <p className="text-sm leading-6 text-gray-600">
+            Combined ingredients from all recipes in this weekly menu.
+          </p>
+        </section>
 
-      <section className="rounded-2xl border bg-white p-6 shadow-sm">
-        <GroceryListChecklist items={items} />
-      </section>
+        <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
+          <GroceryListChecklist items={items} />
+        </section>
+      </div>
     </main>
   )
 }
