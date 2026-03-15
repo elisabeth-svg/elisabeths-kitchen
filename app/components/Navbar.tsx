@@ -32,6 +32,17 @@ export default function Navbar() {
     }`
   }
 
+  function secondaryLinkClass(path: string) {
+    const isActive =
+      pathname === path || (path !== '/' && pathname.startsWith(path))
+
+    return `text-sm transition ${
+      isActive
+        ? 'text-black underline underline-offset-4'
+        : 'text-gray-700 hover:text-black hover:underline underline-offset-4'
+    }`
+  }
+
   useEffect(() => {
     let isMounted = true
 
@@ -163,57 +174,56 @@ export default function Navbar() {
                 </div>
               </nav>
 
-              <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm lg:w-auto lg:px-5 lg:py-2">
-                <div className="flex items-center justify-center gap-4 lg:justify-start">
-                  {loading ? (
-                    <span className="text-sm text-gray-500">Loading...</span>
-                  ) : user ? (
-                    <>
-                      <Link
-                        href="/profile"
-                        className={linkClass('/profile')}
-                      >
-                        Hi{user.firstName ? `, ${user.firstName}` : ''}
-                      </Link>
+              <div className="flex w-full max-w-5xl flex-col items-center gap-3 sm:flex-row sm:justify-center lg:max-w-none lg:w-auto lg:justify-start">
+                <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm sm:w-auto lg:px-5 lg:py-2">
+                  <div className="flex items-center justify-center gap-4 lg:justify-start">
+                    {loading ? (
+                      <span className="text-sm text-gray-500">Loading...</span>
+                    ) : user ? (
+                      <>
+                        <Link
+                          href="/profile"
+                          className="text-sm text-gray-700 hover:text-black hover:underline underline-offset-4"
+                        >
+                          Hi{user.firstName ? `, ${user.firstName}` : ''}
+                        </Link>
 
-                      <Link
-                        href="/pantry"
-                        className={linkClass('/pantry')}
-                      >
-                        Pantry
-                      </Link>
+                        <Link
+                          href="/pantry"
+                          className={secondaryLinkClass('/pantry')}
+                        >
+                          Pantry
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/login"
+                          className="text-sm text-gray-700 hover:text-black hover:underline underline-offset-4"
+                        >
+                          Log in
+                        </Link>
 
-                      <Link
-                        href="/notes"
-                        className={linkClass('/notes')}
-                      >
-                        Notes
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href="/notes"
-                        className={linkClass('/notes')}
-                      >
-                        Notes
-                      </Link>
+                        <Link
+                          href="/signup"
+                          className="rounded-full bg-[#2c585f] px-4 py-2 text-sm font-medium text-white hover:bg-[#24474d]"
+                        >
+                          Sign up
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
 
-                      <Link
-                        href="/login"
-                        className="text-sm font-medium text-gray-700 hover:text-black hover:underline underline-offset-4"
-                      >
-                        Log in
-                      </Link>
-
-                      <Link
-                        href="/signup"
-                        className="rounded-full bg-[#2c585f] px-4 py-2 text-sm font-medium text-white hover:bg-[#24474d]"
-                      >
-                        Sign up
-                      </Link>
-                    </>
-                  )}
+                <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm sm:w-auto lg:px-5 lg:py-2">
+                  <div className="flex items-center justify-center lg:justify-start">
+                    <Link
+                      href="/notes"
+                      className={linkClass('/notes')}
+                    >
+                      Notes
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
