@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 export const metadata: Metadata = {
   title: "Elisabeth's Kitchen",
   description: 'Weekly menus, recipes, and grocery lists',
+  manifest: "/site.webmanifest",
   icons: {
     icon: '/icon.png',
     apple: '/apple-touch-icon.png',
