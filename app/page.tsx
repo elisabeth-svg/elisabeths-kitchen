@@ -33,7 +33,7 @@ const quickFilters = [
       <div className="mx-auto flex max-w-5xl flex-col gap-6 p-6">
         <section className="rounded-2xl border bg-white p-6 shadow-sm">
           <p className="text-sm font-medium uppercase tracking-wide text-green-700">
-            Elisabeth&apos;s Kitchen
+            Elisabeth&apos;s Kitchen - Beta Version
           </p>
 
           <h1 className="mt-2 text-3xl font-semibold text-gray-900">
