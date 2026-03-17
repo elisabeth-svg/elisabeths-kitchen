@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import GroceryListChecklist from './GroceryListChecklist'
+import GroceryListActions from '@/app/components/GroceryListActions'
 
 type PageProps = {
   params: Promise<{ menuId: string }>
@@ -245,7 +246,8 @@ export default async function GroceryListPage({ params }: PageProps) {
     const current = grouped.get(key)!
 
     if (ingredient.quantity !== null && ingredient.quantity !== undefined) {
-      current.totalQuantity = (current.totalQuantity ?? 0) + Number(ingredient.quantity)
+      current.totalQuantity =
+        (current.totalQuantity ?? 0) + Number(ingredient.quantity)
     } else {
       current.countWithoutQuantity += 1
     }
@@ -267,6 +269,18 @@ export default async function GroceryListPage({ params }: PageProps) {
     return a.displayName.localeCompare(b.displayName)
   })
 
+  const actionItems = items.map((item) => ({
+    id: item.key,
+    ingredient_name:
+      item.totalQuantity === null && item.countWithoutQuantity > 1
+        ? `${item.displayName} (${item.countWithoutQuantity})`
+        : item.displayName,
+    quantity: item.totalQuantity,
+    unit: item.unit,
+    store_section: item.category,
+    notes: item.inPantry ? 'Already in pantry' : null,
+  }))
+
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-6 sm:px-6">
       <div className="mx-auto mt-6 max-w-6xl space-y-6">
@@ -283,6 +297,11 @@ export default async function GroceryListPage({ params }: PageProps) {
             Combined ingredients from all recipes in this weekly menu.
           </p>
         </section>
+
+        <GroceryListActions
+          title={formatMenuTitle(menu.name)}
+          items={actionItems}
+        />
 
         <section className="rounded-2xl border bg-white p-4 shadow-sm sm:p-6">
           <GroceryListChecklist items={items} />
