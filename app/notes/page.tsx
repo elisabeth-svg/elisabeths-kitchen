@@ -8,9 +8,7 @@ export default function NotesPage() {
           Elisabeth&apos;s Kitchen
         </p>
 
-        <h1 className="mt-2 text-3xl font-semibold text-gray-900">
-          Notes
-        </h1>
+        <h1 className="mt-2 text-3xl font-semibold text-gray-900">Notes</h1>
 
         <p className="mt-4 max-w-2xl text-gray-600">
           Thoughts on cooking, planning meals, ingredients, and building recipes
@@ -34,6 +32,21 @@ export default function NotesPage() {
           </article>
         </Link>
 
+        <Link href="/notes/browning-and-searing" className="block">
+          <article className="rounded-2xl border bg-white p-6 shadow-sm transition hover:shadow-md">
+            <p className="text-sm text-gray-500">Kitchen basics</p>
+
+            <h2 className="mt-2 text-xl font-semibold text-gray-900">
+              Why Browning and Searing Matter in Slow Cooker and Oven Dishes
+            </h2>
+
+            <p className="mt-3 text-gray-600">
+              Why I rarely skip this step anymore, how browning builds flavor,
+              and when I sear vegetables instead of simply sautéing them.
+            </p>
+          </article>
+        </Link>
+
         <article className="rounded-2xl border bg-white p-6 shadow-sm">
           <p className="text-sm text-gray-500">Coming soon</p>
 
@@ -42,8 +55,8 @@ export default function NotesPage() {
           </h2>
 
           <p className="mt-3 text-gray-600">
-            I’ll be adding practical kitchen notes, cooking tips, and behind-the-scenes
-            thoughts here over time.
+            I’ll be adding practical kitchen notes, cooking tips, and
+            behind-the-scenes thoughts here over time.
           </p>
         </article>
       </section>
