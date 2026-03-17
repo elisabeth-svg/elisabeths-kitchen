@@ -62,6 +62,11 @@ export default function BrowningAndSearingPage() {
         <section className="mt-8 rounded-2xl border bg-[#f4efe9] p-5">
           <h2 className="text-lg font-semibold text-gray-900">In this article</h2>
 
+          <p className="mt-2 text-sm text-gray-600 sm:text-base">
+            This is one of the simplest ways I build more flavor into make-ahead
+            oven and slow cooker meals.
+          </p>
+
           <nav className="mt-3">
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
@@ -232,7 +237,21 @@ export default function BrowningAndSearingPage() {
                 beef stew, a chicken casserole, a slow cooked ragù, or even a lentil
                 dish all benefit from that first contact with higher heat. It gives
                 the final dish more depth without needing extra ingredients or more
-                seasoning later.
+                seasoning later. I notice this especially in dishes like{' '}
+                <Link
+                  href="/recipes/R6"
+                  className="text-blue-600 hover:underline"
+                >
+                  Slow Cooker Beef Ragu
+                </Link>{' '}
+                or{' '}
+                <Link
+                  href="/recipes/R1"
+                  className="text-blue-600 hover:underline"
+                >
+                  Slow Cooker Chicken &amp; Veggie Stew
+                </Link>
+                .
               </p>
             </div>
           </section>
@@ -266,8 +285,22 @@ export default function BrowningAndSearingPage() {
                 carries through the whole dish rather than sitting only on the
                 surface. I notice this especially in lasagna, traybakes, oven stews,
                 shepherd’s pie fillings, baked chicken dishes, and roasted vegetable
-                soups where part of the flavor comes from what happened before the
-                oven, not just inside it.
+                soups. In my own recipe library, this is the kind of difference I
+                think about in dishes like{' '}
+                <Link
+                  href="/recipes/R11"
+                  className="text-blue-600 hover:underline"
+                >
+                  Oven Baked Chicken Drumsticks with Root Veg &amp; Honey Mustard
+                </Link>{' '}
+                and{' '}
+                <Link
+                  href="/recipes/R15"
+                  className="text-blue-600 hover:underline"
+                >
+                  Oven Roasted Veg &amp; Chickpea Coconut Curry
+                </Link>
+                .
               </p>
             </div>
           </section>
@@ -430,8 +463,18 @@ export default function BrowningAndSearingPage() {
                 Cooking With Butter, Oils, and Animal Fats
               </Link>
 
-              <Link href="/recipes" className="text-blue-600 hover:underline">
-                Browse recipes
+              <Link
+                href="/recipes?recipe_type=slow+cooker"
+                className="text-blue-600 hover:underline"
+              >
+                Slow cooker recipes
+              </Link>
+
+              <Link
+                href="/recipes?recipe_type=oven"
+                className="text-blue-600 hover:underline"
+              >
+                Oven recipes
               </Link>
 
               <Link href="/menus" className="text-blue-600 hover:underline">

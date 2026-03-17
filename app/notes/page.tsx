@@ -41,8 +41,9 @@ export default function NotesPage() {
             </h2>
 
             <p className="mt-3 text-gray-600">
-              Why I rarely skip this step anymore, how browning builds flavor,
-              and when I sear vegetables instead of simply sautéing them.
+              A practical note on why I brown ingredients before slow cooker and
+              oven cooking, how it builds flavor, and when I sear vegetables
+              instead of sautéing them.
             </p>
           </article>
         </Link>
