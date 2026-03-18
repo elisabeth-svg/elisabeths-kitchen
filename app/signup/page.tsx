@@ -13,6 +13,7 @@ export default function SignupPage() {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [wantsWeeklyMenuEmail, setWantsWeeklyMenuEmail] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [loading, setLoading] = useState(false)
@@ -33,6 +34,7 @@ export default function SignupPage() {
           first_name: firstName.trim(),
           last_name: lastName.trim(),
           full_name: fullName,
+          wants_weekly_menu_email: wantsWeeklyMenuEmail,
         },
       },
     })
@@ -52,6 +54,7 @@ export default function SignupPage() {
     setLastName('')
     setEmail('')
     setPassword('')
+    setWantsWeeklyMenuEmail(false)
     router.refresh()
   }
 
@@ -60,7 +63,7 @@ export default function SignupPage() {
       <div className="mx-auto max-w-md p-6">
         <Link
           href="/"
-          className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
         >
           ← Back to home
         </Link>
@@ -75,7 +78,8 @@ export default function SignupPage() {
           </h1>
 
           <p className="mt-3 text-sm leading-6 text-gray-600">
-            Create an account so your custom menus can later belong to you.
+            Create an account so your custom menus can belong to you, and choose
+            whether you’d like to receive a weekly menu by email every Friday.
           </p>
 
           <form onSubmit={handleSignup} className="mt-6 space-y-4">
@@ -153,6 +157,23 @@ export default function SignupPage() {
                 placeholder="At least 6 characters"
               />
             </div>
+
+            <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <input
+                type="checkbox"
+                checked={wantsWeeklyMenuEmail}
+                onChange={(e) => setWantsWeeklyMenuEmail(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-gray-300"
+              />
+              <div>
+                <div className="text-sm font-medium text-gray-900">
+                  Yes, I’d like to receive the weekly menu by email every Friday
+                </div>
+                <p className="mt-1 text-sm text-gray-600">
+                  A simple weekly menu to help you plan the week ahead.
+                </p>
+              </div>
+            </label>
 
             {errorMessage && (
               <p className="text-sm text-red-600">{errorMessage}</p>

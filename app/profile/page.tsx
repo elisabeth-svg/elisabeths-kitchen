@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { updateWeeklyMenuEmailPreference } from './actions'
 
 type WeeklyMenu = {
   id: string
@@ -19,6 +20,12 @@ type FavoriteRecipe = {
     title: string
     recipe_type: string
   }[] | null
+}
+
+type ProfileRow = {
+  first_name: string | null
+  last_name: string | null
+  wants_weekly_menu_email: boolean
 }
 
 function formatCreatedDate(value: string) {
@@ -40,10 +47,23 @@ export default async function ProfilePage() {
     redirect('/login')
   }
 
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('first_name, last_name, wants_weekly_menu_email')
+    .eq('id', user.id)
+    .single()
+
   const firstName =
-    (user.user_metadata?.first_name as string | undefined) ?? ''
+    profile?.first_name ??
+    (user.user_metadata?.first_name as string | undefined) ??
+    ''
+
   const lastName =
-    (user.user_metadata?.last_name as string | undefined) ?? ''
+    profile?.last_name ??
+    (user.user_metadata?.last_name as string | undefined) ??
+    ''
+
+  const wantsWeeklyMenuEmail = profile?.wants_weekly_menu_email ?? false
 
   const { data: customMenus, error: menusError } = await supabase
     .from('weekly_menus')
@@ -100,8 +120,8 @@ export default async function ProfilePage() {
             Hi{firstName ? `, ${firstName}` : ''}
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">
-            Manage your personal account, custom menus, pantry items, and
-            favorite recipes.
+            Manage your personal account, custom menus, pantry items, favorite
+            recipes, and email preferences.
           </p>
         </section>
 
@@ -154,6 +174,42 @@ export default async function ProfilePage() {
             </div>
           </section>
         </div>
+
+        <section className="mt-6 rounded-2xl border bg-white p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Email Preferences
+          </h2>
+          <p className="mt-1 text-sm text-gray-600">
+            Choose whether you’d like to receive the weekly menu by email every
+            Friday.
+          </p>
+
+          <form action={updateWeeklyMenuEmailPreference} className="mt-5">
+            <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+              <input
+                type="checkbox"
+                name="wants_weekly_menu_email"
+                defaultChecked={wantsWeeklyMenuEmail}
+                className="mt-1 h-4 w-4 rounded border-gray-300"
+              />
+              <div>
+                <div className="text-sm font-medium text-gray-900">
+                  Send me the weekly menu every Friday
+                </div>
+                <p className="mt-1 text-sm text-gray-600">
+                  A simple weekly menu to help you plan the week ahead.
+                </p>
+              </div>
+            </label>
+
+            <button
+              type="submit"
+              className="mt-4 rounded-xl bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700"
+            >
+              Save email preferences
+            </button>
+          </form>
+        </section>
 
         <section className="mt-6 rounded-2xl border bg-white p-6 shadow-sm">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
