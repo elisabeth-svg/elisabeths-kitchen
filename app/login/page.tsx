@@ -40,7 +40,7 @@ export default function LoginPage() {
       <div className="mx-auto max-w-md p-6">
         <Link
           href="/"
-          className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
         >
           ← Back to home
         </Link>
@@ -55,7 +55,7 @@ export default function LoginPage() {
           </h1>
 
           <p className="mt-3 text-sm leading-6 text-gray-600">
-            Log in to access your own menus and later your pantry and favorites.
+            Log in to access your own menus, My Pantry, and favorite recipes.
           </p>
 
           <form onSubmit={handleLogin} className="mt-6 space-y-4">
