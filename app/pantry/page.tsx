@@ -40,7 +40,7 @@ export default async function PantryPage() {
       <main className="min-h-screen bg-gray-50">
         <div className="mx-auto max-w-5xl p-6">
           <section className="rounded-2xl border bg-white p-6 shadow-sm">
-            <h1 className="text-2xl font-semibold text-gray-900">Pantry</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">My Pantry</h1>
             <p className="mt-4 text-red-600">
               There was a problem loading your pantry.
             </p>
@@ -59,16 +59,18 @@ export default async function PantryPage() {
       <div className="mx-auto max-w-5xl p-6">
         <Link
           href="/"
-          className="inline-block mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-4 inline-block text-sm text-blue-600 hover:underline"
         >
           ← Back to home
         </Link>
 
         <section className="mb-6 rounded-2xl border bg-white p-6 shadow-sm">
           <p className="text-sm font-medium uppercase tracking-wide text-green-700">
-            Your pantry
+            My Pantry
           </p>
-          <h1 className="mt-2 text-3xl font-semibold text-gray-900">Pantry</h1>
+          <h1 className="mt-2 text-3xl font-semibold text-gray-900">
+            My Pantry
+          </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">
             Mark the ingredients you already have at home. Next we will use this
             to make your grocery lists smarter.

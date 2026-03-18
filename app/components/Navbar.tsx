@@ -192,7 +192,7 @@ export default function Navbar() {
                           href="/pantry"
                           className={secondaryLinkClass('/pantry')}
                         >
-                          Pantry
+                          My Pantry
                         </Link>
                       </>
                     ) : (
@@ -217,10 +217,7 @@ export default function Navbar() {
 
                 <div className="w-full rounded-full border border-[#e7e0d8] bg-[#f4efe9] px-5 py-2.5 shadow-sm sm:w-auto lg:px-5 lg:py-2">
                   <div className="flex items-center justify-center lg:justify-start">
-                    <Link
-                      href="/notes"
-                      className={linkClass('/notes')}
-                    >
+                    <Link href="/notes" className={linkClass('/notes')}>
                       Notes
                     </Link>
                   </div>

@@ -100,8 +100,8 @@ export default async function ProfilePage() {
             Hi{firstName ? `, ${firstName}` : ''}
           </h1>
           <p className="mt-3 max-w-2xl text-base leading-7 text-gray-600">
-            Manage your personal account, custom menus, pantry, and favorite
-            recipes.
+            Manage your personal account, custom menus, pantry items, and
+            favorite recipes.
           </p>
         </section>
 
@@ -134,7 +134,7 @@ export default async function ProfilePage() {
           </section>
 
           <section className="rounded-2xl border bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-semibold text-gray-900">Pantry</h2>
+            <h2 className="text-xl font-semibold text-gray-900">My Pantry</h2>
 
             <div className="mt-5">
               <p className="text-3xl font-semibold text-gray-900">
@@ -149,7 +149,7 @@ export default async function ProfilePage() {
                 href="/pantry"
                 className="mt-4 inline-block rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-black"
               >
-                Manage pantry
+                Manage My Pantry
               </Link>
             </div>
           </section>

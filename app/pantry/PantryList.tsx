@@ -96,8 +96,7 @@ export default function PantryList({ ingredients, pantryIds }: Props) {
 
     return Object.entries(groups)
       .sort((a, b) => {
-        const sectionOrderDiff =
-          getSectionOrder(a[0]) - getSectionOrder(b[0])
+        const sectionOrderDiff = getSectionOrder(a[0]) - getSectionOrder(b[0])
 
         if (sectionOrderDiff !== 0) return sectionOrderDiff
 
@@ -159,10 +158,11 @@ export default function PantryList({ ingredients, pantryIds }: Props) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-gray-900">
-            Pantry ingredients
+            Pantry Ingredients
           </h2>
           <p className="mt-1 text-sm text-gray-600">
-            {selectedIds.length} ingredient{selectedIds.length === 1 ? '' : 's'} in pantry
+            {selectedIds.length} ingredient{selectedIds.length === 1 ? '' : 's'}{' '}
+            in pantry
           </p>
         </div>
 
@@ -172,7 +172,7 @@ export default function PantryList({ ingredients, pantryIds }: Props) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search ingredients..."
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none sm:w-72 focus:border-gray-500"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm outline-none focus:border-gray-500 sm:w-72"
           />
 
           <button
@@ -185,7 +185,7 @@ export default function PantryList({ ingredients, pantryIds }: Props) {
                 : 'bg-gray-900 text-white hover:bg-black'
             }`}
           >
-            Clear pantry
+            Clear My Pantry
           </button>
         </div>
       </div>
